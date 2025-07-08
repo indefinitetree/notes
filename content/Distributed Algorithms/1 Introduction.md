@@ -58,7 +58,15 @@ Let's call $c = 1 ,2 , 3$  as stopping state. Once a computer reaches a stopping
 
 In worst case, the algorithm above is not particularly efficient. For example, if we had a chain/cycle with increasing node values, in each round at most two nodes reach the stopping state, which means that it takes $\Theta(n)$ rounds until all nodes have stopped. But we can do much faster. For $n = 256$ unique identifiers initially, in one round, we can reduce the number of colors to $16$.
 
-We can represent the unique identifiers in terms of binary. For example, let's take a node $a$ with value $$v_a = (123)_{10} = (01111011)_{2}$$whose successor node $a'$  (marked with a prime) has values $$v_{a'} = (47)_{10} = (00101111)_2$$Consider the index of the lowest bit that differs i.e., $$v_a[i] ~\neq ~v_{a'}[i]$$Now let the index be $i$ in binary and the value of $v_a[i]$ be $j$ , where $j$ is $0$ or $1$. Define the new color of node $a$ as concatenation of $i$ and $j$ . In other words, set $$v_a = 2 \cdot i + j$$Note that $i$ is at most 3 digits and $j$ is a single bit, thus this new color's value is less than $16$. This process is done by all the nodes in a single round. 
+We can represent the unique identifiers in terms of binary. For example, let's take a node $a$ with value 
+$$v_a = (123)_{10} = (01111011)_{2}$$
+whose successor node $a'$  (marked with a prime) has values 
+$$v_{a'} = (47)_{10} = (00101111)_2$$
+Consider the index of the lowest bit that differs i.e., 
+$$v_a[i] ~\neq ~v_{a'}[i]$$
+Now let the index be $i$ in binary and the value of $v_a[i]$ be $j$ , where $j$ is $0$ or $1$. Define the new color of node $a$ as concatenation of $i$ and $j$ . In other words, set 
+$$v_a = 2 \cdot i + j$$
+Note that $i$ is at most 3 digits and $j$ is a single bit, thus this new color's value is less than $16$. This process is done by all the nodes in a single round. 
 
 Note that this always produces a <span style="color:#69b5e9"><em>proper coloring</em></span>. To see this, consider a pair of nodes $a$ and $b$ so that $b$ is the successor of $a$ . By definition, $v_{a'} = v_b$ , we need to show that $v_a \neq v_b$.
 If the indices in which $a$ differs from $a'$ is same as $b$ differs from $b'$ , then $j$ cannot be same for both as it would imply that $a$ doesn't differ from $a'$ in that index which is contradiction. If the indices in which those two differ are different, then $v_a$  can never be equal to $v_b$ since one of them will be at least be greater than the other by one regardless of what $j$ is chosen for both the nodes.
@@ -71,7 +79,13 @@ Here is a fairly straightforward algorithm. Each node has a flag $u_a \in \{0 , 
 
 In each step, every node with its flag set to $0$ , picks a new color $c$ from $\{1 , 2 , 3\}$ uniformly at random. Then each node sends it current color to its neighbor. If $c$ is different from that of its neighbors, then the flag is set to $1$ and the node stops. Otherwise this continues.
 
-It is easy to see that in each step, a node $a$ will stop with probability $1/3$ . Fix a positive constant $C$. Let $$k = (C + 1) \mathrm{log}~_{3/2} ~ n$$ where $n$ is the number of nodes in the graph. Now if we run this algorithm for $k$ steps, the probability that a given node $a$ has not stopped is $$ \left(\dfrac{2}{3}\right)^k = \left(\dfrac{1}{n}\right)^{C+1} $$ By the union bound, the probability that there is a node that has not stopped is at most $$p = \dfrac{1}{n^C}$$
+It is easy to see that in each step, a node $a$ will stop with probability $1/3$ . Fix a positive constant $C$. Let 
+$$k = (C + 1) \mathrm{log}~_{3/2} ~ n$$
+where $n$ is the number of nodes in the graph. Now if we run this algorithm for $k$ steps, the probability that a given node $a$ has not stopped is 
+$$ \left(\dfrac{2}{3}\right)^k = \left(\dfrac{1}{n}\right)^{C+1} $$
+By the union bound, the probability that there is a node that has not stopped is at most 
+$$p = \dfrac{1}{n^C}$$
+
 Thus, with probability at least $1 - p$ , all nodes have stopped after $k$ steps. For any given constant $C$ , there is an algorithm that runs for $k$ = $O(\mathrm{log} ~ n)$ rounds and produces a proper 3-coloring of a path with probability $1 - \dfrac{1}{n^C}$ . 
 
 ## <span style="color:#d3a939">Exercises </span>
