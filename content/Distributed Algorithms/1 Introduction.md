@@ -1,5 +1,5 @@
 ---
-title: Introduction
+title: 1 Introduction
 ---
 ---
 Distributed algorithms present theoretical computer science from a different perspective. 

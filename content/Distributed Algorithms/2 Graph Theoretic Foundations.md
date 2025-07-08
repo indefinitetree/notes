@@ -1,5 +1,5 @@
 ---
-title: Graph Theoretic Foundations
+title: 2 Graph Theoretic Foundations
 ---
 --- 
 Basic Terminologies such as
