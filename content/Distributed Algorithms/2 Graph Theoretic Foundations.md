@@ -85,7 +85,7 @@ Consider $A = V \setminus X'$ , the set of nodes that are not in the <span style
 Similar to the above argument, $(d+1)\cdot |A| \geq |V|$ . Again to put in perspective, this says that the <span style="color:#69b5e9"><em>union</em></span> of all neighbors and vertex itself for each vertex in $A$ equals $V$. This is not really evident at first. Let's prove this by contradiction. Suppose there was a vertex $u$ such that it is missed out while taking the <span style="color:#69b5e9"><em>union</em></span>. Now $u \notin A$ and all the neighbors of $u$ are also not in $A$. This means that $u$ and all the neighbors of $u$ both belong to the set $X'$ . But this leads to a contradiction, since removing $u$ from this set still gives us a <span style="color:#69b5e9"><em>vertex cover</em></span> which has a cardinality lesser than $X'$. 
 
 The result now follows up eventually. We know 
-$$ \displaystyle{|A| \geq \dfrac{|V|}{d+1}} $$
+$$\displaystyle{|A| \geq \dfrac{|V|}{d+1}}$$
 
 Since $|X'| = |V| - |A|$ , therefore 
 $$\displaystyle{|X'| \leq \dfrac{d}{d+1} |V|}$$
