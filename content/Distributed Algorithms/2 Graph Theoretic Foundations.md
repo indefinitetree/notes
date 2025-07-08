@@ -84,13 +84,12 @@ Consider $A = V \setminus X'$ , the set of nodes that are not in the <span style
 
 Similar to the above argument, $(d+1)\cdot |A| \geq |V|$ . Again to put in perspective, this says that the <span style="color:#69b5e9"><em>union</em></span> of all neighbors and vertex itself for each vertex in $A$ equals $V$. This is not really evident at first. Let's prove this by contradiction. Suppose there was a vertex $u$ such that it is missed out while taking the <span style="color:#69b5e9"><em>union</em></span>. Now $u \notin A$ and all the neighbors of $u$ are also not in $A$. This means that $u$ and all the neighbors of $u$ both belong to the set $X'$ . But this leads to a contradiction, since removing $u$ from this set still gives us a <span style="color:#69b5e9"><em>vertex cover</em></span> which has a cardinality lesser than $X'$. 
 
-The result now follows up eventually. We know 
-$$\begin{align} \displaystyle{|A| \geq \dfrac{|V|}{d+1}} \end{align}$$
+The result now follows up eventually. We know $$\displaystyle{\begin{align}|A| \geq \dfrac{|V|}{d+1} \end{align}}$$
 
 Since $|X'| = |V| - |A|$ , therefore 
-$$\displaystyle{|X'| \leq \dfrac{d}{d+1} |V|}$$
+$$\displaystyle{\begin{align}|X'| \leq \dfrac{d}{d+1} |V|\end{align}}$$
 Previously, we had $|V| \leq (d+1) \cdot |Y|$ . Combining these two, we get
-$$\displaystyle{|X'| \leq d \cdot |Y|}$$
+$$\displaystyle{\begin{align}|X'| \leq d \cdot |Y|\end{align}}$$
 which is the required result.
 
 One key point to note is that we didn't really use the property that $X'$ is a <span style="color:#69b5e9"><em>minimum vertex cover</em></span>, rather we used the property that any minimum vertex cover is also a <span style="color:#69b5e9"><em>minimal vertex cover</em></span>. Thus, this claim holds true even when we consider any <span style="color:#69b5e9"><em>minimal vertex cover</em></span>.
