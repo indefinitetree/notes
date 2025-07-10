@@ -5,7 +5,7 @@ title: 2 Graph Theoretic Foundations
 Basic Terminologies such as
 - Undirected and directed graphs
 - Adjacency , Degree , k-regular 
-- Subgraphs , Induced subgraph (Vertex/Edge induced) , Dpanning subgraph
+- Subgraphs , Induced subgraph (Vertex/Edge induced) , Spanning subgraph
 - Walks, Cycles, Paths, Trail
 - Connectivity, Distance, Diameter, Tree, Isomorphism
 
