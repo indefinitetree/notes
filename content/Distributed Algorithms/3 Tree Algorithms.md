@@ -6,23 +6,23 @@ Before we move on to the Algorithms, there are few terminologies and assumptions
 1.  The network model is a <span style="color:#69b5e9"><em>connected undirected graph</em></span> - It could be weighted or unweighted
 
 2.  Local communication - Nodes can communicated directly(only) with their neighbors through the edges. There are two types of communication.
-	<span style="color:#69b5e9"><em>Local unicast</em></span> - Nodes can send different messages to each of its neighbors (more suitable to wired networks).
-	<span style="color:#69b5e9"><em>Local broadcast</em></span> - Nodes send the same message to all of its neighbors in any step (feature in wireless networks).
+	- <span style="color:#69b5e9"><em>Local unicast</em></span> - Nodes can send different messages to each of its neighbors (more suitable to wired networks).
+	- <span style="color:#69b5e9"><em>Local broadcast</em></span> - Nodes send the same message to all of its neighbors in any step (feature in wireless networks).
 
 3.  Synchrony - Two important models can be distinguished based on processor synchronization.
-	 <span style="color:#69b5e9"><em>Synchronous model</em></span> - Each processor has an internal clock and the clocks are <span style="color:#69b5e9"><em> synchronized</em></span>. We assume the processor speeds are <span style="color:#69b5e9"><em>uniform</em></span> and each processor takes the same amount of time to perform the same operation. Computation proceeds in lock-step in a series of discrete rounds (time steps). In each round, each processor (node) can do some local (internal) computation and can also send/receive messages. To be concrete, we assume that at the beginning of a round, a node receives messages (if any) from its neighbors via its incident edges.
+	- <span style="color:#69b5e9"><em>Synchronous model</em></span> - Each processor has an internal clock and the clocks are <span style="color:#69b5e9"><em> synchronized</em></span>. We assume the processor speeds are <span style="color:#69b5e9"><em>uniform</em></span> and each processor takes the same amount of time to perform the same operation. Computation proceeds in lock-step in a series of discrete rounds (time steps). In each round, each processor (node) can do some local (internal) computation and can also send/receive messages. To be concrete, we assume that at the beginning of a round, a node receives messages (if any) from its neighbors via its incident edges.
 	 
-	<span style="color:#69b5e9"><em> Asynchronous model</em></span> - No assumptions are made about the internal clocks. We assume that messages arrive in the same order they are sent (FIFO). Algorithms designed for the synchronous model could be transferred to asynchronous model by means of a tool called the <span style="color:#69b5e9"><em>synchronizer</em></span>.
+	- <span style="color:#69b5e9"><em> Asynchronous model</em></span> - No assumptions are made about the internal clocks. We assume that messages arrive in the same order they are sent (FIFO). Algorithms designed for the synchronous model could be transferred to asynchronous model by means of a tool called the <span style="color:#69b5e9"><em>synchronizer</em></span>.
 
 4.  Local knowledge - Two models
-	 KT0 - (**K**nowledge of all nodes is restricted **T**ill radius 0) also known as <span style="color:#69b5e9"><em>clean network model</em></span>. Standard model that is typically used. In this model, each node has a port associated with an incident edge (each having a port number). Each node only knows about its own port number and that an edge goes out of it, but nothing about the other endpoint of the edge.
+	 - <span style="color:#69b5e9"><em>KT0</em></span> - (**K**nowledge of all nodes is restricted **T**ill radius 0) also known as <span style="color:#69b5e9"><em>clean network model</em></span>. Standard model that is typically used. In this model, each node has a port associated with an incident edge (each having a port number). Each node only knows about its own port number and that an edge goes out of it, but nothing about the other endpoint of the edge.
 	 
-	 KT1 - Here one can assume that the nodes have initial knowledge of their neighbors, especially their IDs.
+	 - <span style="color:#69b5e9"><em>KT1</em></span> - Here one can assume that the nodes have initial knowledge of their neighbors, especially their IDs.
 
 5.  CONGEST vs LOCAL 
-	 <span style="color:#69b5e9"><em>CONGEST</em></span> - The size of each message sent per round is small, typically of size $O(\log ~n)$ , where $n$ is the size of the network. This is a reasonable bound as this is at least required to send the unique address of a node. This model captures the inherent bandwidth restriction that is present in real-world networks.
+	 - <span style="color:#69b5e9"><em>CONGEST</em></span> - The size of each message sent per round is small, typically of size $O(\log ~n)$ , where $n$ is the size of the network. This is a reasonable bound as this is at least required to send the unique address of a node. This model captures the inherent bandwidth restriction that is present in real-world networks.
 	 
-	<span style="color:#69b5e9"><em> LOCAL</em></span> - There is no restriction on the size of message. This model is useful in focusing on <span style="color:#69b5e9"><em>locality</em></span> issues in distributed computing.
+	- <span style="color:#69b5e9"><em> LOCAL</em></span> - There is no restriction on the size of message. This model is useful in focusing on <span style="color:#69b5e9"><em>locality</em></span> issues in distributed computing.
 
 6.  Operation - Usually, each node is assumed to operate on the <span style="color:#69b5e9"><em>same instance</em></span> of the algorithm. However, depending on the local information, each node can have its own behavior (due to randomness or unique ID or the information sent by other nodes).
 ---
@@ -51,8 +51,8 @@ The flooding algorithm is correct i.e., all nodes eventually receive the message
 
 ##### <span style="color:#7788f0">Proof:</span>
 Let $v$ be any node. We use induction on $t$ to show that after $t$ time units, the message has already reached every vertex in $\mathrm{ball}_G(s , t)$ . 
-<span style="color:#69b5e9"><em>Base case:</em></span> At $t = 0$ this is trivially true. 
-<span style="color:#69b5e9"><em>Induction Step:</em></span> We assume the hypothesis is true at time $t$. It follows at time $t+1$ , all neighbors of nodes at distance $t$ , which are at distance $t+1$ , will receive the message.
+- <span style="color:#69b5e9"><em>Base case:</em></span> At $t = 0$ this is trivially true. 
+- <span style="color:#69b5e9"><em>Induction Step:</em></span> We assume the hypothesis is true at time $t$. It follows at time $t+1$ , all neighbors of nodes at distance $t$ , which are at distance $t+1$ , will receive the message.
 
 The message complexity follows from the fact that each edge delivers the message <span style="color:#69b5e9"><em>at least once</em></span> and at most twice (one in each direction). 
 
@@ -64,8 +64,8 @@ The time complexity is clearly bounded by the <span style="color:#69b5e9"><em>di
 Any distributed algorithm for broadcast has a message complexity of $\Omega(n)$ and time complexity of $\Omega(D)$.
 
 #### <span style="color:#78bff2">Proof:</span>
-<span style="color:#69b5e9"><em>Message Complexity:</em></span> Every node has to receive the message so at least $n-1$ messages are needed. Note that this is not a tight lower bound for broadcast.
-<span style="color:#69b5e9"><em>Time Complexity:</em></span> For any source node $s$ , there exists a node $u$ which is at a distance of at least $\Omega(D)$ from $s$. Note that this is a tight lower bound for broadcast.
+- <span style="color:#69b5e9"><em>Message Complexity:</em></span> Every node has to receive the message so at least $n-1$ messages are needed. Note that this is not a tight lower bound for broadcast.
+- <span style="color:#69b5e9"><em>Time Complexity:</em></span> For any source node $s$ , there exists a node $u$ which is at a distance of at least $\Omega(D)$ from $s$. Note that this is a tight lower bound for broadcast.
 
 ### <span style="color:#8bd952">Tree Broadcast:</span>
 
@@ -96,6 +96,7 @@ $$
 at some source $s$ . 
 
 Instead of a straightforward algorithm of performing <span style="color:#69b5e9"><em>convergecast</em></span> $k$ times for each element in the list ($O(k \cdot \mathrm{height}(T))$ time), we can do much better using something called <span style="color:#69b5e9"><em>pipelining</em></span>. 
+
 Each node when it receives the value send the aggregated values component by component to their respective parent. More formally, for the first $k$ rounds, the leaf nodes will send the list values one by one. An intermediate node $v$ would receive all the values of $j$th component in the round $j + \mathrm{height}(v)$ . At this time, it will send the aggregated values along with its value to its parent. Using an inductive argument, it could be shown that the total number of rounds would be $O(k + \mathrm{height}(T))$ .
 
 ## <span style="color:#d3a939">Upcast</span>
@@ -126,7 +127,7 @@ The Flooding algorithm could be modified to convert the network into a <span sty
 
 ### <span style="color:#8bd952">Distributed BFS Tree construction:</span>
 
-Source node $s$ sends an <span style="color:#69b5e9"><em>invite</em></span> message inviting its neighbors to be its children. When a node $v$ receives an <span style="color:#69b5e9"><em>invite</em></span> message from one or more neighbors for the first time, it will respond exactly to one such invite</em></span> message. It does by sending an <span style="color:#69b5e9"><em>accept</em></span> message to its parent. Any <span style="color:#69b5e9"><em>invite</em></span> message in the later rounds is ignored. Very similar to visited array concept used in graph traversal. 
+Source node $s$ sends an <span style="color:#69b5e9"><em>invite</em></span> message inviting its neighbors to be its children. When a node $v$ receives an <span style="color:#69b5e9"><em>invite</em></span> message from one or more neighbors for the first time, it will respond exactly to one such <span style="color:#69b5e9"><em>invite</em></span> message. It does by sending an <span style="color:#69b5e9"><em>accept</em></span> message to its parent. Any <span style="color:#69b5e9"><em>invite</em></span> message in the later rounds is ignored. Very similar to visited array concept used in graph traversal. 
 
 #### <span style="color:#78bff2">Pseudocode:</span>
 ```
