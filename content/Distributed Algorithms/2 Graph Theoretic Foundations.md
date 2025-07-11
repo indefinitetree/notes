@@ -1,5 +1,6 @@
 ---
 title: 2 Graph Theoretic Foundations
+date: 2025-07-08
 ---
 --- 
 Basic Terminologies such as

@@ -1,5 +1,6 @@
 ---
 title: 1 Introduction
+date: 2025-07-07
 ---
 ---
 Distributed algorithms present theoretical computer science from a different perspective. 

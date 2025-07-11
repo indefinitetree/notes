@@ -1,5 +1,6 @@
 ---
 title: 0 Distributed Algorithms
+date: 2025-07-07
 ---
 ## List of contents 
 ### [[1 Introduction |Introduction]]

@@ -1,5 +1,6 @@
 ---
 title: 3 Tree Algorithms
+date: 2025-07-10
 ---
 ---
 Before we move on to the Algorithms, there are few terminologies and assumptions that should be made clear about the distributed network model we consider.
