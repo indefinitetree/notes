@@ -7,3 +7,7 @@ date: 2025-07-07
 ### [[2 Graph Theoretic Foundations |Graph Theoretic Foundations]]
 
 ### [[3 Tree Algorithms |Tree Algorithms]]
+
+### [[4 Local Symmetry Breaking|Local Symmetry Breaking]]
+
+### [[5 Minimum Spanning Tree|Minimum Spanning Tree]]
