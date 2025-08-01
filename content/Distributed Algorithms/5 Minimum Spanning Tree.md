@@ -241,3 +241,57 @@ At every <span style="color:#69b5e9"><em>level</em></span>, a node sends/receive
 - sends - 1 <span style="color:#69b5e9"><em>report</em></span> message , 1 <span style="color:#69b5e9"><em>changeroot/connect</em></span> message , 1 <span style="color:#69b5e9"><em>successful test</em></span> message
 
 Since each node can be at at most $\log n$ <span style="color:#69b5e9"><em>levels</em></span> (Every level doubles the fragment size), therefore the message complexity is $2|E| + 5n \log n$ .
+
+## Pipeline Algorithm:
+
+The Pipeline algorithm is essentially an upcast algorithm, where we build a BFS tree over the graph and each node upcasts edges to the root of the BFS tree; the root ends up having (enough) global knowledge of the network topology and locally computes the MST and downcasts the MST edges to all nodes in the network. A naive algorithm would be to upcast all the edges in $\Theta(m)$ rounds. 
+
+The main idea of the Pipeline MST algorithm is to filter the number of edges broadcasted so that the running time is reduced to $O(n)$ rounds. However, the message complexity can be as much as $\Theta(n^2)$ .
+
+The pipeline algorithm uses the cycle property of MST to filter edges at the intermediate steps. Each node $v$ except the root $r$, maintains two lists of edges $Q$ and $U$. Initially, $Q$ only contains edges adjacent to $v$ and $U$ is empty. At each round, $v$ sends min-weight edge in $Q$ that does not create a cycle with the edges in $U$ to its parent and moves this edge from $Q$ to $U$. If $Q$ is empty, $v$ sends a terminate message to its parent. The parent after receiving an edge from a child, adds the edge in its $Q$ list. A leaf node starts sending edges upwards at round $0$ . An intermediate node starts sending at the first round after it has received at least one message from each of its children. 
+
+### Pseudocode:
+
+```
+1. Build a BFS Tree B in G. Let r be the root of B
+2. Each node v , except the root r , maintains two list of edges, Q(v) and U(v)
+3. A leaf node starts sending edges upwards at round 0. An intermediate node starts sending at the first round after it has received at least one message from each of its children.
+4. Initially Q(v) contains only edges adjacent to v and U(v) is empty. At each round, v sends the minimum-weight edge in Q(v) that does not create a cycle with the edges in U(v) to its parent and moves this edge from Q(v) to U(v). Any edge that creates a cycle with edges in U(v) is deleted from Q(v). If Q(v) is empty, v sends a terminate message to its parent. The parent after receiving an edge from a child adds the edge in its Q(v) list.
+5. The root r computes the MST locally among the edges it hears from its children . The solution is then broadcast over tree B to all nodes.
+
+```
+
+### Analysis:
+
+We make two observations
+1. The edges reported by each intermediate vertex to its parent in the tree are cycle-free.
+2. Each vertex starts sending messages upwards at round $L(v) = \text{height}(T(v))$ .
+
+Consider an intermediate vertex $v$ at height $h$ that has still not terminated its participation in the algorithm, at round $t$, for some $t \geq h$. A child is active if it has not terminated yet.
+
+#### Claim:
+1. For each child $u$ of $v$ that is still active at round $t$ , $Q(v)$ at the beginning of round $t$ contains at least one edge.
+2. If $v$ sends to its parent an edge of weight $w_0$ at round $t$, then all of the elements $v$ was informed at round $t-1$ by its active children were of weight $w_0$ or larger.
+3. If $v$ sends to its parent an element of weight $w_0$ at round $t$ , then any later element it will learn is of weight $w_0$ or larger.
+4. Any non-root node $v$ sends elements in nondecreasing weight order to its parent; it sends the elements in a continuous fashion till it terminates.
+
+#### Proof:
+The proof is by induction on the height of the tree.
+- Base case: Trivially holds for leaves
+- Induction Step: Consider an intermediate vertex $v$ at height $h$  and assume that the claims hold for each of its children.
+	- Let $A_v$ be the set of $k$ elements sent by $v$ to its parent during the first $t - h$  rounds. The set of edges in $A_v$ are cycle-free , by the line 4 in algorithm (Sent edges are in $U(v)$ and edge which is going to be sent doesn't form cycle with $U(v)$).  Consider an active child $u$ of $v$. Let $A_u$ be the set of elements sent by $u$ to $v$ up to round $t-1$. $u$ has continuously transmitted to $v$ , since round $L(u) \leq h-1$ . Hence $|A_u| \geq k+1$ . Thus there exists some edge $f \in A_u - A_v$ such that $A_u \cup \{f\}$ is cycle-free. This element belongs to $Q(v)$.
+	- Consider any active child $u$ of $v$. Let $f$ be the element sent by $u$ on round $t-1$ . Let $f'$ be some element by $u$ at some round $t' \leq t-1$ and is still in $Q(v)$ at round $t$ . Then $w(f) \geq w(f') \geq w_0$ .
+
+#### Running Time and Message Analysis:
+The root starts getting messages at time $\text{height}(T)$ . The root receives at most $n-1$ elements from each of its children. The time to know all edges is $O(n - 1 + \text{height}(T))$ . If we consider the additional broadcasting, the total time is $O(n)$. 
+In the worst case, each node can $\Theta(n)$ edges upward, and hence the overall message complexity is $O(n^2)$ .
+
+## Garay-Kutten-Peleg (GKP) Algorithm:
+
+Lets look at a distributed MST algorithm that runs in $O(D + \sqrt n \log^* n)$ time.  The GKP algorithm consists of two parts: it combines the GHS algorithm 
+
+
+## Resources:
+
+- [Advanced Distributed Systems Lectures](https://www.cse.iitd.ac.in/~srsarangi/courses/2021/col_819_2021/index.html) by Prof. Smruti Sarangi (GHS Algorithm)
+- [Distributed Network Algorithms](https://drive.google.com/file/d/1axfgtgEmGvvWxBoaZhjwK1lVFrj_nV10/view) by Prof. Gopal Pandurangan (Chapter 7)

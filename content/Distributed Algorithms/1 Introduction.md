@@ -35,7 +35,7 @@ Such answers will be useful in understanding nature and fundamental limitations 
 
 ## <span style="color:#d3a939">Coloring Cycles Fast</span>
 
-Let's look at a very fast distributed algorithm. We will have a simple setting - A graph which is a <span style="color:#69b5e9"><em>directed cycle</em></span>. Each node has exactly one <span style="color:#69b5e9"><em>successor</em></span> and one <span style="color:#69b5e9"><em>predecessor</em></span>. Let's say we need a proper $k$-coloring i.e., each node has to be labelled with a label varying from $0$ to $k-1$ and labels of any pair of neighbors are always different.
+Let's look at a very fast distributed algorithm. We will have a simple setting - A graph which is a <span style="color:#69b5e9"><em>directed cycle</em></span>. By directed, its not about the communication pathway, the underlying communication is still both ways, except each node has an extra information. (like whose on the left etc.) Each node has exactly one <span style="color:#69b5e9"><em>successor</em></span> and one <span style="color:#69b5e9"><em>predecessor</em></span>. Let's say we need a proper $k$-coloring i.e., each node has to be labelled with a label varying from $0$ to $k-1$ and labels of any pair of neighbors are always different.
 
 We'll assume that initially the nodes are already colored with some color. This is a valid assumption in a real life setting, because each computer could be mapped to a unique identifier from a large set of identifiers. Think of this like an IP address. Currently, the number of colors is as large as the maximum value of any computer's identifier, we would like to reduce the number of colors.
 
@@ -86,7 +86,48 @@ Note that $i$ is at most 3 digits and $j$ is a single bit, thus this new color's
 Note that this always produces a <span style="color:#69b5e9"><em>proper coloring</em></span>. To see this, consider a pair of nodes $a$ and $b$ so that $b$ is the successor of $a$ . By definition, $v_{a'} = v_b$ , we need to show that $v_a \neq v_b$.
 If the indices in which $a$ differs from $a'$ is same as $b$ differs from $b'$ , then $j$ cannot be same for both as it would imply that $a$ doesn't differ from $a'$ in that index which is contradiction. If the indices in which those two differ are different, then $v_a$  can never be equal to $v_b$ since one of them will be at least be greater than the other by one regardless of what $j$ is chosen for both the nodes.
 
-The algorithm reduces $2^x$ colors to $2x$ colors in one round. If we iterate the algorithm, we can reduce the number of colors $n$ to $6$ in **$O(\mathrm{log}^* ~ x)$** rounds. Once we have reduced it to $6$ colors, we can then reduce it to $3$ colors by the algorithm we discussed previously in $3$ rounds.
+The algorithm reduces $2^x$ colors to $2x$ colors in one round. If we iterate the algorithm, we can reduce the number of colors $n$ to $6$ in **$O(\mathrm{log}^* ~ x)$** rounds. The reduction works only till the maximum number of colors is of size 3-bits, and maximum color value possible is $6$ in that case since index of $i$ is at max $2$ which is $(10)_2$ . Once we have reduced it to $6$ colors, we can then reduce it to $3$ colors by the algorithm we discussed previously in $3$ rounds. 
+
+We must be careful about the time complexity especially when we deal with such small functions, because for practical purposes, the constants will start mattering! ($\log ^* n \leq 6$  for all practical $n$). But here, as a classic theoretic person in the context, we'll skip it anyways.
+
+## <span style="color:#d3a939">2-Coloring Algorithms:</span>
+
+Consider a undirected path graph. It's clear that it has a 2-coloring. A straightforward algorithm would be to perform $O(n)$ round computation where each node gets to know about the whole graph, then compute the coloring locally and then outputting the color, or maybe just find the distance from the start node and color based on the parity (in case of directed). 
+
+### <span style="color:#8bd952">Canonical LOCAL Algorithm:</span>
+
+LOCAL is a type of model used in distributed algorithm. It'll be defined properly in the upcoming sections, but for now its just as equivalent of what we have assumed till now - Each node has a unique ID and information about its neighbors and tries to output/compute some structure or property of the network.
+
+In any $t$-round algorithm, any node in the network can gain information/topology of the network within a radius of $t$ distance. For a particular node, any such distributed algorithm can be viewed as a centralized algorithm being locally operated on a $t$-hop subgraph of that node (or $\text{ball}_G(v , t)$). At first round, we simulate it for $t$ radius, then we simulate it for $t-1$ radius and so on.
+
+Thus, any $t$-round LOCAL algorithm can be mathematically viewed as a $f(\text{ball}_G(v , t))$ , where $f$ is some function that operates on the graph. The main essence is that the algorithm does not care about the topology of the graph that is greater than radius $t$ for any node.
+
+### <span style="color:#8bd952">Lower bound for 2-coloring:</span>
+
+Indeed, the straightforward algorithm we discussed is asymptotically as good as any other algorithm could do in terms of number of rounds. Let's prove this by contradiction. Suppose there is an algorithm $A$ which runs for $t = o(n)$ rounds and outputs a $2$-coloring for given a path graph. Let's cpnstruct a counter-example for which this algorithm $A$ would fail. 
+
+Consider three graphs  $G_1 , G_2 , G_3$ , all having nodes with unique identifiers,  of path length $2t+1$ , with central node being $u , v , w$ . Let's run the algorithm on these three graphs and get the 2-coloring for each of these path graphs. Now, by pigeonhole principle, atleast two of $u , v , w$ should have the same color. WLOG, we assume $G_1 , G_3$ are such graphs having central node being colored with the same color. Note that the central nodes in all three graphs has exactly $t$ nodes in both the sides.
+
+Given these info, construct a new graph $G$ , by adding a edge from one terminal node of $G_1$ to one terminal node of $G_3$ .
+
+```
+Color configuration of G1
+c' - ... - c(u) - ... - c'
+
+Color configuration of G3
+c'' - ... - c(w)- ... - c''
+
+Color configuration of G
+c' - ... - c(u) - ... - c' - c'' - ... - c(w) - ... - c'' 
+```
+
+We have two cases:
+1. If $c' \neq c''$ - The algorithm $A$ is wrong in this case for one of the graphs $G_1$ or $G_3$ as $c(u) = c(w)$ fixes the color configuration for every node and it should be same for both the graphs.
+2. If $c' = c''$ - The algorithm $A$ is wrong in this case for graph $G$ (Assuming that $2t+1+2t+1 \leq n$ , as we have a monochromatic edge.
+
+Thus, such an algorithm $A$ cannot exist with $4t+2 \leq n \implies t \leq \dfrac{n-2}{4}$ rounds. Note that for $t$ greater than this bound, this argument of "the algorithm working on $G$ is exactly equivalent to the algorithm independently working on $G_1$ and $G_3$ , then their results being combined directly", would fail, since now the radius of the central nodes will start overlapping with each other.
+
+Thus, for any deterministic $2$-coloring algorithm, $\Omega(n)$ is the lower bound.
 
 ## <span style="color:#d3a939">Coloring with Randomized Algorithms</span>
 
@@ -111,4 +152,9 @@ Thus, with probability at least $1 - p$ , all nodes have stopped after $k$ steps
 
 ## <span style="color:#d3a939">Exercises </span>
 
-Will be added soon
+1. Is there a $2$-coloring algorithm which runs in less than $n$ rounds on a path graph of length $n$?
+
+## <span style="color:#d3a939">Resources:</span>
+
+- CS6851 Distributed Algorithms July-Nov 2025 Offering by Prof. Shreyas Pai.
+- [Distributed Algorithms 2020](https://jukkasuomela.fi/da2020/) by Prof. Juho Hirvonen and Prof. Jukka Suomela (Chapter 1).

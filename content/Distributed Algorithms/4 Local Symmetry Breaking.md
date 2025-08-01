@@ -157,7 +157,7 @@ Since there $2|F|$ directed edges, the actual number of edges deleted is at leas
 The algorithm terminates in $O(\log n)$ iterations with <span style="color:#69b5e9"><em>high probability</em></span>.
 
 ###### <span style="color:#ba7bee">Proof:</span>
-Let $X$ be the number of edges remaining after $k$th iteration. The expected number of edges remaining after $k$ iterations is at most $\dfrac{|E|}{2^k}$. Let $k = C \log n$.
+Let $X$ be the number of edges remaining after $k$-th iteration. The expected number of edges remaining after $k$ iterations is at most $\dfrac{|E|}{2^k}$. Let $k = C \log n$.
 Plugging this in, we get the expected number of edges remaining as
 $$
 E[X] = \dfrac{|E|}{n^C} 
@@ -170,8 +170,60 @@ Since $|E| \leq n^2$ , therefore $P(X \leq 1) \leq \dfrac{1}{n^{C-2}}$ , we can 
 
 ## <span style="color:#d3a939">Coloring</span>
 
-We already saw an $O(\log^* n)$-round algorithm for directed paths. A similar algorithm can be applied for rooted trees as well. Follow the same strategy, but instead each node comparing its color with its <span style="color:#69b5e9"><em>parent</em></span> instead of its <span style="color:#69b5e9"><em>successor</em></span>. By this way, we can maintain the legality each round. We can view this algorithm on rooted trees working on each disjoint path on the tree separately from a node.
+We already saw an $O(\log^* n)$-round algorithm for directed paths.  Let's now look at the lower-bound for $3$-coloring directed paths.
+### <span style="color:#8bd952">Lower bound for 3-coloring directed paths:</span>
 
+First of all, we define something called a $k$-ary , $c$-coloring function $f$ which takes $k$ inputs and produces an output value (a color here) from $\{1 , 2 , ... , c\}$ i.e., 
+$$
+f(a_1 , a_2 , ... , a_k) = c' \in \{1 , 2 , ... , c\} 
+$$
+with $a_1 < a_2 < a_3 < ... < a_k$  (for convenience) , as well as it satisfies the following condition:
+$$
+f(a_1 , a_2 , ... , a_k) \neq f(a_2 , a_3 , ... , a_k , a_{k+1})
+$$
+
+Let $A$ be a $t$-round $3$-coloring algorithm and $f_A(a_1 , a_2 , ... , a_{2t+1})$ be the color node $a_{t+1}$ (outputs at the end of $A$ when run on a directed path graph $a_1 \rightarrow a_2 \rightarrow ... a_{2t} \rightarrow a_{2t+1}$ . Now, if $A$ is a valid $3$-coloring algorithm, then its straightforward to see that $f_A$ is a $2t+1$-ary , $3$-coloring function, since it satisfies the condition mentioned above
+$$
+f_A(a_1 , a_2 , ... , a_{2t+1}) = c(a_{t+1}) \neq c(a_{t+2}) = f_A(a_2 , a_3 , ... , a_{2t+2})
+$$
+#### <span style="color:#78bff2">Claim:</span>
+Let $f_{2t+1}$ be a $2t+1$-ary $c$-coloring function which outputs the color of node $a_{t+1}$.  Define $f_{2t}$ as
+$$
+f_{2t}(a_1 , a_2 , ... , a_{2t}) = \{f_{2t+1}(a_1 , a_2 , ... , a_{2t+1})~ | ~ a_{2t+1} > a_{2t}\}
+$$
+$f_{2t}$ is a $2t$-ary $2^c$ coloring function.
+#### <span style="color:#78bff2">Proof:</span>
+Before the proof, we first clarify some things here and there. First, this claim is <span style="color:#69b5e9"><em>purely mathematical</em></span>, meaning that the function isn't really doing anything but this is for a general function. Second, $f_{2t}$ has its output as a set, which is a subset of $\{1 , 2 , ... , c \}$ i.e., range of $f_{2t}$ is the <span style="color:#69b5e9"><em>power set</em></span> of $\{1 , 2 , ... , c\}$. This is by definition of function, since $f_{2t+1}$ has its outputs from $\{1 , 2 , ... , c\}$ . Thus, $f_{2t}$ by definition, is a $2^c$ coloring function. Now to prove the claim, we need to show that 
+$$
+f_{2t}(a_1 , a_2 , ... , a_{2t}) \neq f_{2t}(a_2 , a_3 , ... , a_{2t+1})
+$$
+We prove this by contradiction. Assume
+$$
+f_{2t}(a_1 , a_2 , ... , a_{2t}) = f_{2t}(a_2 , a_3 , ... , a_{2t+1})
+$$
+Now consider the element $f_{2t+1}(a_1 , a_2 , ... , a_{2t+1})$ present in the set $f_{2t}(a_1 , a_2 , ... , a_{2t})$. Since by assumption, the sets are equal, therefore this element must be present in the other set as well, i.e., there exists $a_{2t+2} > a_{2t+1}$ such that $f_{2t+1}(a_2, a_3, ... , a_{2t+2}) = f_{2t+1}(a_1 , a_2 , ... , a_{2t+1})$ . 
+
+But this is a contradiction, since $f_{2t+1}$ is a $2t+1$-ary $c$-coloring function (by definition $a_{2t+2}$ shouldn't exist). Therefore, the sets are not equal. Note that in the case where $a_{2t+1}$ is the maximum possible element (in case of finite sets), $f_{2t}(a_2 , a_3 , ... , a_{2t+1})$ is an <span style="color:#69b5e9"><em>empty set</em></span> by definition.
+
+Now we complete the proof for the lower bound. If we have a $t$-round algorithm $A$,  which gives a $3$-coloring on directed graphs, it can be viewed as $f_A$ , which is a $(2t+1)$-ary $3$-coloring function. Using the claim we made above, there exists a function $f'$ which is a $(2t)$-ary $2^3$-coloring function. which could be constructed as given in the claim.
+
+Repeatedly using the claim again and again on the function $i$ times, we get a function $f^*$ which is a $(2t-i+1)$-ary $2^{2^{.^{.^{3}}}}$ -coloring function.
+
+Let $i = 2t$ , then $f^*$ becomes a unary $\lambda$ -coloring function, where $\log^* \lambda = 2t+1$.  Now, for $$
+t < \dfrac{1}{2} \log^* n -1 \implies \log^* \lambda <\log^* n \implies \lambda < n
+$$But since $f^*$ is a unary $\lambda$-coloring function, therefore $\forall ~ a_1 < a_2$  ,$$
+f^*(a_1) \neq f^*(a_2)
+$$which means that all $a_1 , a_2 , a_3 , ... , a_n$ will have different output values when they become inputs for $f^*$. But this is not possible, since $f^*$ is a $\lambda$-coloring function, with $\lambda < n$. This means that $f^*$ doesn't exist. 
+
+Back tracing all the functions, $f'$ doesn't exist implies $f_A$ doesn't exist which implies that such an algorithm $A$ cannot exist. Hence, the lower bound on $3$-coloring directed paths.
+
+This kind of proof technique where we define a function and then progressively kind of simulate rounds is also called <span style="color:#69b5e9"><em>Round-Elimination Technique</em></span>. In a general way, this technique can be viewed as reducing a $t$-round algorithm solving a problem $\Pi$ to a $t-1$ round algorithm solving a problem $\Pi'$ that could be then used to solve the original problem. In this case, the problem description stayed same, but in some problems, the problem description along with other properties might blow up exponentially. There is a tool called [[#^round|Round Eliminator]] which automatically does this round-elimination.
+
+Also, note that this lower bound proof uses <span style="color:#69b5e9"><em>stronger and general claims</em></span> which implies that locality in some sense is a strong property regardless of the graph's whole topology.
+
+---
+
+A similar algorithm can be applied for rooted trees as well. Follow the same strategy, but instead each node comparing its color with its <span style="color:#69b5e9"><em>parent</em></span> instead of its <span style="color:#69b5e9"><em>successor</em></span>. By this way, we can maintain the legality each round. We can view this algorithm on rooted trees working on each disjoint path on the tree separately from a node.
 ### $\Delta + 1$ <span style="color:#8bd952">coloring on bounded degree graphs:</span>
 
 Lets now see a coloring algorithm for a general bounded degree graph along the lines of the algorithm we saw previously.
@@ -187,6 +239,14 @@ This again can be viewed similar to the algorithm presented for rooted trees, he
 Now we reduce this to $\Delta + 1$ in $O(2^{3 \Delta})$ rounds. In each round, one color higher than $\Delta + 1$ is eliminated. This is straightforward - choose a set of nodes with color $c > \Delta + 1$ , let's say $\Delta + 2$ . Now find the minimum color that is not present among the neighbors of this node and recolor it with that color. Since initially legality was preserved before these rounds, no two adjacent nodes will be recoloring themselves, thus preserving legality. We continue the same process for nodes with color $\Delta + 3$ , and so on.
 
 #### <span style="color:#78bff2">Claim:</span>
+
 Any graph with maximum degree $\Delta$ can be colored in $O(2^{3\Delta} + \log^* n)$  rounds using $\Delta + 1$ colors. If we assume $\Delta = O(1)$ , then such a graph can be colored in $O(\log^* n)$ rounds.
 
-## <span style="color:#d3a939">Exercises</span>
+## <span style="color:#d3a939">Exercises:</span>
+
+
+## <span style="color:#d3a939">Resources:</span>
+
+- https://github.com/olidennis/round-eliminator - Round Eliminator Tool that does automatic Round-Elimination. It also gives heuristic based reduction problems in case the problem description is too large. ^round
+- CS6851 Distributed Algorithms July-Nov 2025 Offering by Prof. Shreyas Pai.
+-  [Distributed Network Algorithms](https://drive.google.com/file/d/1axfgtgEmGvvWxBoaZhjwK1lVFrj_nV10/view) by Prof. Gopal Pandurangan (Chapter 6)
