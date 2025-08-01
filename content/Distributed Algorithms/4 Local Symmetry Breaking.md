@@ -209,11 +209,15 @@ Now we complete the proof for the lower bound. If we have a $t$-round algorithm 
 
 Repeatedly using the claim again and again on the function $i$ times, we get a function $f^*$ which is a $(2t-i+1)$-ary $2^{2^{.^{.^{3}}}}$ -coloring function.
 
-Let $i = 2t$ , then $f^*$ becomes a unary $\lambda$ -coloring function, where $\log^* \lambda = 2t+1$.  Now, for $$
+Let $i = 2t$ , then $f^*$ becomes a unary $\lambda$ -coloring function, where $\log^* \lambda = 2t+1$.  Now, for 
+$$
 t < \dfrac{1}{2} \log^* n -1 \implies \log^* \lambda <\log^* n \implies \lambda < n
-$$But since $f^*$ is a unary $\lambda$-coloring function, therefore $\forall ~ a_1 < a_2$  ,$$
+$$
+But since $f^*$ is a unary $\lambda$-coloring function, therefore $\forall ~ a_1 < a_2$  ,
+$$
 f^*(a_1) \neq f^*(a_2)
-$$which means that all $a_1 , a_2 , a_3 , ... , a_n$ will have different output values when they become inputs for $f^*$. But this is not possible, since $f^*$ is a $\lambda$-coloring function, with $\lambda < n$. This means that $f^*$ doesn't exist. 
+$$
+which means that all $a_1 , a_2 , a_3 , ... , a_n$ will have different output values when they become inputs for $f^*$. But this is not possible, since $f^*$ is a $\lambda$-coloring function, with $\lambda < n$. This means that $f^*$ doesn't exist. 
 
 Back tracing all the functions, $f'$ doesn't exist implies $f_A$ doesn't exist which implies that such an algorithm $A$ cannot exist. Hence, the lower bound on $3$-coloring directed paths.
 
