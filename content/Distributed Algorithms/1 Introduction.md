@@ -131,6 +131,21 @@ Thus, for any deterministic $2$-coloring algorithm, $\Omega(n)$ is the lower bou
 
 ## <span style="color:#d3a939">Coloring with Randomized Algorithms</span>
 
+### <span style="color:#8bd952">Randomized Algorithms:</span>
+
+Randomized Algorithms can be classified into two types:
+
+1. Las-Vegas Algorithms: Algorithms which provide correct solutions (i.e., doesn't fail on any input), but running time of the algorithm is a random variable and is expressed in terms of expected runtime.
+2. Monte-Carlo Algorithms: Algorithms whose running time complexity is determined/fixed but the algorithm doesn't necessarily produce correct solutions. The algorithm's success/failure is a random variable. It could be bounded by a probability. A common term used is "Algorithm runs with high probability". This means that the probability of algorithm providing a incorrect output (failure) can be bounded as $\leq  \dfrac{1}{n^C}$ , where $C$ is a constant related to running time (usually hidden due to asymptotic notation).
+
+### <span style="color:#8bd952">Union-Bound:</span>
+
+Let $A_i$ be the event that node $i$ fails to compute the solution properly. Then the union bound tells us that
+$$
+P\left[\bigcup_{i = 1}^{n} A_i\right] \leq \sum_{i=1}^{n} P \left[ A_i \right]
+$$
+This is straightforward from the inclusion-exclusion principle, where we drop the higher order terms.
+### <span style="color:#8bd952">3-coloring Randomized Algorithm:</span>
 Here is a fairly straightforward algorithm. Each node has a flag $u_a \in \{0 , 1\}$ , indicating whether it has stopped or not, and value $v_a$. Once $u_a$ is $1$ , the node outputs $v_a$. 
 
 In each step, every node with its flag set to $0$ , picks a new color $c$ from $\{1 , 2 , 3\}$ uniformly at random. Then each node sends it current color to its neighbor. If $c$ is different from that of its neighbors, then the flag is set to $1$ and the node stops. Otherwise this continues.
@@ -153,6 +168,7 @@ Thus, with probability at least $1 - p$ , all nodes have stopped after $k$ steps
 ## <span style="color:#d3a939">Exercises </span>
 
 1. Is there a $2$-coloring algorithm which runs in less than $n$ rounds on a path graph of length $n$?
+2. Design a $O(\log^* n)$ round algorithm that works on any path (not given a consistent orientation of the edges). 
 
 ## <span style="color:#d3a939">Resources:</span>
 

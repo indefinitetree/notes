@@ -1,5 +1,6 @@
 ---
 title: 5 Minimum Spanning Tree
+date: 2025-07-14
 ---
 ---
 <span style="color:#69b5e9"><em>Minimum Spanning Tree (MST)</em></span> problem is a <span style="color:#69b5e9"><em>global</em></span> problem since it needs at least $\Omega(D)$ rounds in a network of diameter $D$, i.e., the computation needs the entire graph to be traversed.

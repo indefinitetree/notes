@@ -221,13 +221,18 @@ which means that all $a_1 , a_2 , a_3 , ... , a_n$ will have different output va
 
 Back tracing all the functions, $f'$ doesn't exist implies $f_A$ doesn't exist which implies that such an algorithm $A$ cannot exist. Hence, the lower bound on $3$-coloring directed paths.
 
-This kind of proof technique where we define a function and then progressively kind of simulate rounds is also called <span style="color:#69b5e9"><em>Round-Elimination Technique</em></span>. In a general way, this technique can be viewed as reducing a $t$-round algorithm solving a problem $\Pi$ to a $t-1$ round algorithm solving a problem $\Pi'$ that could be then used to solve the original problem. In this case, the problem description stayed same, but in some problems, the problem description along with other properties might blow up exponentially. There is a tool called [[#^round|Round Eliminator]] which automatically does this round-elimination.
+This kind of proof technique where we define a function and then progressively kind of simulate rounds is also called <span style="color:#69b5e9"><em>Round-Elimination Technique</em></span>. In a general way, this technique can be viewed as reducing a $t$-round algorithm solving a problem $\Pi$ to a $t-1$ round algorithm solving a problem $\Pi'$ that could be then used to solve the original problem. In this case, the problem description stayed same, but in some problems, the problem description along with other properties might blow up exponentially. There is a tool called Round Eliminator which automatically does this round-elimination.
 
 Also, note that this lower bound proof uses <span style="color:#69b5e9"><em>stronger and general claims</em></span> which implies that locality in some sense is a strong property regardless of the graph's whole topology.
 
 ---
+### <span style="color:#8bd952">3-coloring on rooted trees:</span>
 
 A similar algorithm can be applied for rooted trees as well. Follow the same strategy, but instead each node comparing its color with its <span style="color:#69b5e9"><em>parent</em></span> instead of its <span style="color:#69b5e9"><em>successor</em></span>. By this way, we can maintain the legality each round. We can view this algorithm on rooted trees working on each disjoint path on the tree separately from a node.
+
+Once the color reduce is done, we can convert the $6$-coloring to $3$-coloring by the <span style="color:#69b5e9"><em>shift-down</em></span> technique. Each node adopts the color of its parent. The root chooses any color different from its current. This ensures legality and additionally, for each node, now its neighbors will be using at most two colors. 
+
+Using <span style="color:#69b5e9"><em>shift-down</em></span> we can eliminate the colors $4 , 5 , 6$ with each color being eliminated in two rounds. Let's say we need to eliminate color $4$. Once the <span style="color:#69b5e9"><em>shift-down</em></span> is done, the nodes with color $4$ can freely choose any one color from $1 , 2 , 3$ since its neighbors use at most two colors. We can repeat this for colors $5$ and $6$ as well to get the $3$-coloring.
 ### $\Delta + 1$ <span style="color:#8bd952">coloring on bounded degree graphs:</span>
 
 Lets now see a coloring algorithm for a general bounded degree graph along the lines of the algorithm we saw previously.
@@ -238,7 +243,7 @@ $$
 $$
 where $c(u_i)[b(u_i)]$  represents the $b(u_i)$th bit in $c(u_i)$. 
 
-This again can be viewed similar to the algorithm presented for rooted trees, here we have $\Delta$ parents at most for each node and we break the <span style="color:#69b5e9"><em>symmetry</em></span> with each parent. This algorithm reduces the number of bits in the colors from $\ell$ to at most $\Delta(\log \ell + 1)$ in one step. Thus, by applying this reduction $O(\log^* n)$ times, the number of bits in the colors reduce to at most $3\Delta$ . Hence the total number of colors in the graph is at most $2^{3\Delta}$ .
+This again can be viewed similar to the algorithm presented for rooted trees, here we have $\Delta$ parents at most for each node and we break the <span style="color:#69b5e9"><em>symmetry</em></span> with each parent. This algorithm reduces the number of bits in the colors from $\ell$ to at most $\Delta(\log \ell + 1)$ in one step. Thus, by applying this reduction $O(\log^* n)$ times, the number of bits in the colors reduce to at most $6\Delta$ . By doing a shift-down, it can be reduced to $3\Delta$. Hence the total number of colors in the graph is at most $2^{3\Delta}$ .
 
 Now we reduce this to $\Delta + 1$ in $O(2^{3 \Delta})$ rounds. In each round, one color higher than $\Delta + 1$ is eliminated. This is straightforward - choose a set of nodes with color $c > \Delta + 1$ , let's say $\Delta + 2$ . Now find the minimum color that is not present among the neighbors of this node and recolor it with that color. Since initially legality was preserved before these rounds, no two adjacent nodes will be recoloring themselves, thus preserving legality. We continue the same process for nodes with color $\Delta + 3$ , and so on.
 
@@ -246,11 +251,22 @@ Now we reduce this to $\Delta + 1$ in $O(2^{3 \Delta})$ rounds. In each round, o
 
 Any graph with maximum degree $\Delta$ can be colored in $O(2^{3\Delta} + \log^* n)$  rounds using $\Delta + 1$ colors. If we assume $\Delta = O(1)$ , then such a graph can be colored in $O(\log^* n)$ rounds.
 
+#### <span style="color:#78bff2">Open Problems and Ideas:</span>
+
+For $\Delta + 1$ coloring on general graphs, Linial gave an algorithm which runs in $O(\Delta^2 + \log^* n)$ rounds. Then the time complexity was further reduced to $O(\Delta + \log^* n)$ and for some specialized problems, to $O(\sqrt{\Delta} + \log^* n)$ . But all these algorithms are non-constructive. Can we make it constructive? How does the trade-off between $\Delta$ and $n$ on different algorithms?
+
+Open question (Considered to be hard): Is $O(\Delta + \log^* n)$ round algorithm optimal for $\Delta + 1$ - coloring on general bounded degree graphs? Note that this lower bound has been proved for MIS.
+
 ## <span style="color:#d3a939">Exercises:</span>
+
+1.  We have seen distributed algorithms for MIS and $3$-coloring.
+	1. Show that given a $3$-coloring of the nodes it is possible to compute an MIS in $O(1)$ additional rounds. Does this mean that there exists an $O(\log^* n)$ round CONGEST algorithm for computing MIS on paths?
+	2. Show that given any MIS of the path, it is possible to compute a $3$-coloring in $O(1)$ additional rounds. Does this mean that computing an MIS in the LOCAL model requires $\Omega(\log^* n)$ rounds? 
 
 
 ## <span style="color:#d3a939">Resources:</span>
 
-- https://github.com/olidennis/round-eliminator - Round Eliminator Tool that does automatic Round-Elimination. It also gives heuristic based reduction problems in case the problem description is too large. ^round
+- https://github.com/olidennis/round-eliminator - Round Eliminator Tool that does automatic Round-Elimination. It also gives heuristic based reduction problems in case the problem description is too large.
+- [Linial's Lower bound made easy](https://arxiv.org/pdf/1402.2552) by Juhana Laurinharju and Jukka Suomela.
 - CS6851 Distributed Algorithms July-Nov 2025 Offering by Prof. Shreyas Pai.
--  [Distributed Network Algorithms](https://drive.google.com/file/d/1axfgtgEmGvvWxBoaZhjwK1lVFrj_nV10/view) by Prof. Gopal Pandurangan (Chapter 6)
+- [Distributed Network Algorithms](https://drive.google.com/file/d/1axfgtgEmGvvWxBoaZhjwK1lVFrj_nV10/view) by Prof. Gopal Pandurangan (Chapter 6)
