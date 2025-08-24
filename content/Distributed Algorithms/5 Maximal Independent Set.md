@@ -1,5 +1,3 @@
-
----
 We will look at problems which are <span style="color:#69b5e9"><em>local</em></span> symmetry breaking, where the goal is to break <span style="color:#69b5e9"><em>symmetry</em></span> among nodes that are quite close, typically neighbors. A fundamental problem in this category is the <span style="color:#69b5e9"><em>Maximal Independent Set (MIS)</em></span> problem. We will look at a <span style="color:#69b5e9"><em>MIS</em></span> Algorithm that takes $O(\log n)$ rounds. Another way to view this analysis is that each node (with high probability) needs only information about its $O(\log n)$ neighborhood. 
 
 A fundamental open question in distributed computing is to fully characterize the <span style="color:#69b5e9"><em>locality</em></span> of <span style="color:#69b5e9"><em>MIS</em></span>. We can show a highly non-trivial locality lower bound of $\Omega(\log ^* n)$ for MIS. 
@@ -8,7 +6,6 @@ Besides <span style="color:#69b5e9"><em>MIS</em></span>, another <span style="co
 
 We will consider the synchronous <span style="color:#69b5e9"><em>LOCAL</em></span> model, although all the algorithms will work seamlessly in the <span style="color:#69b5e9"><em>CONGEST</em></span> model as well, for the following problems. As usual we consider the network as an undirected connected graph $G = (V,E)$ of $n$ nodes. All nodes have unique identifiers and can be represented in $O(\log n)$ bits. We also assume that all nodes are awake initially and start executing the algorithm simultaneously.
 
----
 ## <span style="color:#d3a939">Maximal Independent Set (MIS)</span>
 
 An useful property of <span style="color:#69b5e9"><em>MIS</em></span> is that it is also a <span style="color:#69b5e9"><em>dominating set</em></span>. In fact it is a <span style="color:#69b5e9"><em>minimal dominating set (MDS)</em></span> as well. A <span style="color:#69b5e9"><em>dominating set</em></span> could be used as a network backbone for routing - it is enough to find routes between the nodes in the <span style="color:#69b5e9"><em>dominating set</em></span>; any other node can route by sending it to any of its dominator first.

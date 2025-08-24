@@ -1,4 +1,3 @@
---- 
 Basic Terminologies such as
 - Undirected and directed graphs
 - Adjacency , Degree , k-regular 
@@ -7,8 +6,6 @@ Basic Terminologies such as
 - Connectivity, Distance, Diameter, Tree, Isomorphism
 
 are assumed to be known already.
-
----
 ## <span style="color:#d3a939">Packing and Covering</span>
 
 A subset of nodes $X \subseteq V$  is 

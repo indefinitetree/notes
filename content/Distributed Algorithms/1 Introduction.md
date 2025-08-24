@@ -1,6 +1,4 @@
 
-
----
 Distributed algorithms present theoretical computer science from a different perspective. 
 
 Let's start with an example:
@@ -11,8 +9,6 @@ Given this graph, we might need to compute some information, let's say we need t
 Coloring problems though why? How is it useful in real-life situations? Let's take the network of computers example. A <span style="color:#69b5e9"><em>coloring</em></span> here would give a schedule to exchange information. Choose an ordering over the set of colors $C$ . Then iterate over it. At time $t$ , all the computers which are marked with color $c_t$  can be made active. Such a set of computers of the same color $c_t$ would form an <span style="color:#69b5e9"><em>independent set</em></span>. Since no two nodes are neighbor in such an <span style="color:#69b5e9"><em>independent set</em></span>, therefore the active computers can safely do whatever they want without disrupting the nearby computers (since they are inactive).
 
 A general overview of computation problems that we are interested would be - Given a graph, the nodes need to work together (in the sense, exchange information) to solve some computation problem. Usually it is a graph problem - Finding a spanning tree, finding a proper vertex coloring, etc.
-
----
 ## <span style="color:#d3a939">Distributed Problems</span>
 
 When we talk about distributed problems, there are few assumptions. Initially, each node is <span style="color:#69b5e9"><em>only aware of itself</em></span> (For example, the color of the node itself). The final goal is such that each node knows its own part of the solution for a given computation problem (In the case of coloring, the final color the node should have). This is already enough for each node to know what to do. For example, if the node knows that its final color is $c_t$ , then time it should be active is time slot $t$ .
