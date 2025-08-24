@@ -109,9 +109,10 @@ One key point to note is that we didn't really use the property that $X'$ is a <
 
 What if we used any <span style="color:#69b5e9"><em>vertex cover</em></span> instead of $X'$ ? The statement doesn't hold true now. The simplest counterexample would be considering the vertex cover that covers all the vertices. Choose $|V| = 4$ and $d = 3$. Here $|Y| = 1$ , while $|X| = 4$, contradicting the claim.
 
-
-
 ---
 ## <span style="color:#d3a939">Exercises</span> 
 
 Will be added soon
+
+## Resources:
+- [Distributed Algorithms 2020](https://jukkasuomela.fi/da2020/) by Prof. Juho Hirvonen and Prof. Jukka Suomela (Chapter 2).

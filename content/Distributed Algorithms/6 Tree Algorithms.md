@@ -2,38 +2,11 @@
 title: 3 Tree Algorithms
 date: 2025-07-10
 ---
----
-Before we move on to the Algorithms, there are few terminologies and assumptions that should be made clear about the distributed network model we consider.
-1.  The network model is a <span style="color:#69b5e9"><em>connected undirected graph</em></span> - It could be weighted or unweighted
-
-2.  Local communication - Nodes can communicated directly(only) with their neighbors through the edges. There are two types of communication.
-	- <span style="color:#69b5e9"><em>Local unicast</em></span> - Nodes can send different messages to each of its neighbors (more suitable to wired networks).
-	- <span style="color:#69b5e9"><em>Local broadcast</em></span> - Nodes send the same message to all of its neighbors in any step (feature in wireless networks).
-
-3.  Synchrony - Two important models can be distinguished based on processor synchronization.
-	- <span style="color:#69b5e9"><em>Synchronous model</em></span> - Each processor has an internal clock and the clocks are <span style="color:#69b5e9"><em> synchronized</em></span>. We assume the processor speeds are <span style="color:#69b5e9"><em>uniform</em></span> and each processor takes the same amount of time to perform the same operation. Computation proceeds in lock-step in a series of discrete rounds (time steps). In each round, each processor (node) can do some local (internal) computation and can also send/receive messages. To be concrete, we assume that at the beginning of a round, a node receives messages (if any) from its neighbors via its incident edges.
-	 
-	- <span style="color:#69b5e9"><em> Asynchronous model</em></span> - No assumptions are made about the internal clocks. We assume that messages arrive in the same order they are sent (FIFO). Algorithms designed for the synchronous model could be transferred to asynchronous model by means of a tool called the <span style="color:#69b5e9"><em>synchronizer</em></span>.
-
-4.  Local knowledge - Two models
-	 - <span style="color:#69b5e9"><em>KT0</em></span> - (**K**nowledge of all nodes is restricted **T**ill radius 0) also known as <span style="color:#69b5e9"><em>clean network model</em></span>. Standard model that is typically used. In this model, each node has a port associated with an incident edge (each having a port number). Each node only knows about its own port number and that an edge goes out of it, but nothing about the other endpoint of the edge.
-	 
-	 - <span style="color:#69b5e9"><em>KT1</em></span> - Here one can assume that the nodes have initial knowledge of their neighbors, especially their IDs.
-
-5.  CONGEST vs LOCAL 
-	 - <span style="color:#69b5e9"><em>CONGEST</em></span> - The size of each message sent per round is small, typically of size $O(\log ~n)$ , where $n$ is the size of the network. This is a reasonable bound as this is at least required to send the unique address of a node. This model captures the inherent bandwidth restriction that is present in real-world networks.
-	 
-	- <span style="color:#69b5e9"><em> LOCAL</em></span> - There is no restriction on the size of message. This model is useful in focusing on <span style="color:#69b5e9"><em>locality</em></span> issues in distributed computing.
-
-6.  Operation - Usually, each node is assumed to operate on the <span style="color:#69b5e9"><em>same instance</em></span> of the algorithm. However, depending on the local information, each node can have its own behavior (due to randomness or unique ID or the information sent by other nodes).
----
-
-## <span style="color:#d3a939">Broadcast </span>
+## <span style="color:#d3a939">Broadcast: </span>
 
 Lets look at the following problem:
 
 Given a network $G = (V , E)$ and a source node $s$ , send a <span style="color:#69b5e9"><em>message</em></span> $M$ from $s$ to all nodes in $V$. 
-
 ### <span style="color:#8bd952">Flooding Algorithm:</span>
 
 This algorithm is pretty straightforward. Every vertex $v$ $\neq s$ upon receiving $M$ for the first time, forwards it on every other edge. More like a BFS with visited array, where receiving the message makes the visited flag to be set true and the node no longer sends the message and stops. 

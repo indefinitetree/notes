@@ -6,11 +6,13 @@ date: 2025-07-07
 ### [[1 Introduction |Introduction]]
 ### [[2 Graph Theoretic Foundations |Graph Theoretic Foundations]]
 
-### [[3 Tree Algorithms |Tree Algorithms]]
+### [[6 Tree Algorithms|Tree Algorithms]]
 
-### [[4 Local Symmetry Breaking|Local Symmetry Breaking]]
+### [[5 Maximal Independent Set|Local Symmetry Breaking]]
 
-### [[5 Minimum Spanning Tree|Minimum Spanning Tree]]
+### [[7 Minimum Spanning Tree|Minimum Spanning Tree]]
+
+### [[Solutions|Solutions]]
 
 ## Resources used:
 

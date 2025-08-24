@@ -1,4 +1,4 @@
-## 1 Introduction
+## [[1 Introduction|1 Introduction]]
 
 #### Design a $O(\log^* n)$ round algorithm that works on any path (not given a consistent orientation of the edges). 
 
@@ -8,7 +8,7 @@ Now, given such path, we define source nodes as the nodes with no incoming edges
 
 This will work (with small subtleties that can be fixed locally) in a way, since by fixing the colors of the source and sink nodes, we essentially partition the path into sets of consistent directed paths. If at the start, none of the nodes had $0$ or $1$ as their unique ID, then this is complete and will produce a valid $3$-coloring. In the case where one of the nodes with ID $0$ or $1$ turns out to be a neighbor of a source or sink node respectively, We can fix this locally (by taking min) after color reduce or we can just initialize this at start to some max value and run the color reduce without any issues.
 
-## 4 Local Symmetry Breaking
+## [[5 Maximal Independent Set|5 Maximal Independent Set]]
 
 #### We have seen distributed algorithms for MIS and $3$-coloring.
 ##### 1. Show that given a $3$-coloring of the nodes it is possible to compute an MIS in $O(1)$ additional rounds. Does this mean that there exists an $O(\log^* n)$ round CONGEST algorithm for computing MIS on paths?

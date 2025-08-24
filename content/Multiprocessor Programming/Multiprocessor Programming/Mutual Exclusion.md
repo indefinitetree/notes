@@ -1,0 +1,2 @@
+## Time:
+Reasoning about concurrent computation is mostly reasoning about time. We need a simple but unambiguous language to talk about events and durations in time.  Threads share a common time. A thread is a state machine, and its state transitions are called events.

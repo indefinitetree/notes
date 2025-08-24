@@ -33,144 +33,33 @@ Distributed algorithms heavily rely on <span style="color:#69b5e9"><em>locality<
 
 Such answers will be useful in understanding nature and fundamental limitations of any other system consisting of interacting entities such as social networks, job markets etc.
 
-## <span style="color:#d3a939">Coloring Cycles Fast</span>
+## Definitions and Terminologies:
 
-Let's look at a very fast distributed algorithm. We will have a simple setting - A graph which is a <span style="color:#69b5e9"><em>directed cycle</em></span>. By directed, its not about the communication pathway, the underlying communication is still both ways, except each node has an extra information. (like whose on the left etc.) Each node has exactly one <span style="color:#69b5e9"><em>successor</em></span> and one <span style="color:#69b5e9"><em>predecessor</em></span>. Let's say we need a proper $k$-coloring i.e., each node has to be labelled with a label varying from $0$ to $k-1$ and labels of any pair of neighbors are always different.
+Before we move on to the Algorithms, there are few terminologies and assumptions that should be made clear about the distributed network model we consider.
+1.  The network model is a <span style="color:#69b5e9"><em>connected undirected graph</em></span> - It could be weighted or unweighted
 
-We'll assume that initially the nodes are already colored with some color. This is a valid assumption in a real life setting, because each computer could be mapped to a unique identifier from a large set of identifiers. Think of this like an IP address. Currently, the number of colors is as large as the maximum value of any computer's identifier, we would like to reduce the number of colors.
+2.  Local communication - Nodes can communicated directly(only) with their neighbors through the edges. There are two types of communication.
+	- <span style="color:#69b5e9"><em>Local unicast</em></span> - Nodes can send different messages to each of its neighbors (more suitable to wired networks).
+	- <span style="color:#69b5e9"><em>Local broadcast</em></span> - Nodes send the same message to all of its neighbors in any step (feature in wireless networks).
 
-Let's say we already have a coloring with 256 numbers (labels from $0$ to $255$ ).
+3.  Synchrony - Two important models can be distinguished based on processor synchronization.
+	- <span style="color:#69b5e9"><em>Synchronous model</em></span> - Each processor has an internal clock and the clocks are <span style="color:#69b5e9"><em> synchronized</em></span>. We assume the processor speeds are <span style="color:#69b5e9"><em>uniform</em></span> and each processor takes the same amount of time to perform the same operation. Computation proceeds in lock-step in a series of discrete rounds (time steps). In each round, each processor (node) can do some local (internal) computation and can also send/receive messages. To be concrete, we assume that at the beginning of a round, a node receives messages (if any) from its neighbors via its incident edges.
+	 
+	- <span style="color:#69b5e9"><em> Asynchronous model</em></span> - No assumptions are made about the internal clocks. We assume that messages arrive in the same order they are sent (FIFO). Algorithms designed for the synchronous model could be transferred to asynchronous model by means of a tool called the <span style="color:#69b5e9"><em>synchronizer</em></span>.
 
-![[Pasted image 20250708004101.png]]
+4.  Local knowledge - Two models
+	 - <span style="color:#69b5e9"><em>KT0</em></span> - (**K**nowledge of all nodes is restricted **T**ill radius 0) also known as <span style="color:#69b5e9"><em>clean network model</em></span>. Standard model that is typically used. In this model, each node has a port associated with an incident edge (each having a port number). Each node only knows about its own port number and that an edge goes out of it, but nothing about the other endpoint of the edge.
+	 
+	 - <span style="color:#69b5e9"><em>KT1</em></span> - Here one can assume that the nodes have initial knowledge of their neighbors, especially their IDs.
 
-One algorithm would be to follow a simple strategy: In each step, a node is active if it is a local maximum. The active nodes will then pick a color which is free from the color that the neighbors already have.  This process is continued until all the nodes stop changing their colors. It can be shown that we can reduce any number of coloring to a 3-coloring since each node has at most two neighbors in the graph. 
+5.  CONGEST vs LOCAL 
+	 - <span style="color:#69b5e9"><em>CONGEST</em></span> - The size of each message sent per round is small, typically of size $O(\log ~n)$ , where $n$ is the size of the network. This is a reasonable bound as this is at least required to send the unique address of a node. This model captures the inherent bandwidth restriction that is present in real-world networks.
+	 
+	- <span style="color:#69b5e9"><em> LOCAL</em></span> - There is no restriction on the size of message. This model is useful in focusing on <span style="color:#69b5e9"><em>locality</em></span> issues in distributed computing.
 
-Let's write this algorithm as a pseudocode, we should keep in mind that all the nodes in the network run the same algorithm. Let $c$ be the unique identifier of the the node. Pseudocode is given as follows.
+6.  Operation - Usually, each node is assumed to operate on the <span style="color:#69b5e9"><em>same instance</em></span> of the algorithm. However, depending on the local information, each node can have its own behavior (due to randomness or unique ID or the information sent by other nodes).
 
----
-```
-while(true){
-	Send message c to all neighbors
-	Receive messages from all neighbors. Let M be the set of messages received
-	If c != 1 && c != 2 && c != 3 && c > max(M){
-		c = min({1 , 2 , 3} \ M) 
-	}
-}
-```
----
-
-Let's call $c = 1 ,2 , 3$  as stopping state. Once a computer reaches a stopping state, it never changes it state, meaning eventually all the computers would reach this state and the process will end at some finite time. We can rewrite the algorithm without `while(true)` by breaking out of the loop whenever the node reaches the stopping state.
-
-## <span style="color:#d3a939">Faster coloring with Unique identifiers</span>
-
-In worst case, the algorithm above is not particularly efficient. For example, if we had a chain/cycle with increasing node values, in each round at most two nodes reach the stopping state, which means that it takes $\Theta(n)$ rounds until all nodes have stopped. But we can do much faster. For $n = 256$ unique identifiers initially, in one round, we can reduce the number of colors to $16$.
-
-We can represent the unique identifiers in terms of binary. For example, let's take a node $a$ with value 
-$$
-v_a = (123)_{10} = (01111011)_{2}
-$$
-whose successor node $a'$  (marked with a prime) has values 
-$$
-v_{a'} = (47)_{10} = (00101111)_2
-$$
-Consider the index of the lowest bit that differs i.e., 
-$$
-v_a[i] ~\neq ~v_{a'}[i]
-$$
-Now let the index be $i$ in binary and the value of $v_a[i]$ be $j$ , where $j$ is $0$ or $1$. Define the new color of node $a$ as concatenation of $i$ and $j$ . In other words, set 
-$$
-v_a = 2 \cdot i + j
-$$
-Note that $i$ is at most 3 digits and $j$ is a single bit, thus this new color's value is less than $16$. This process is done by all the nodes in a single round. 
-
-Note that this always produces a <span style="color:#69b5e9"><em>proper coloring</em></span>. To see this, consider a pair of nodes $a$ and $b$ so that $b$ is the successor of $a$ . By definition, $v_{a'} = v_b$ , we need to show that $v_a \neq v_b$.
-If the indices in which $a$ differs from $a'$ is same as $b$ differs from $b'$ , then $j$ cannot be same for both as it would imply that $a$ doesn't differ from $a'$ in that index which is contradiction. If the indices in which those two differ are different, then $v_a$  can never be equal to $v_b$ since one of them will be at least be greater than the other by one regardless of what $j$ is chosen for both the nodes.
-
-The algorithm reduces $2^x$ colors to $2x$ colors in one round. If we iterate the algorithm, we can reduce the number of colors $n$ to $6$ in **$O(\mathrm{log}^* ~ x)$** rounds. The reduction works only till the maximum number of colors is of size 3-bits, and maximum color value possible is $6$ in that case since index of $i$ is at max $2$ which is $(10)_2$ . Once we have reduced it to $6$ colors, we can then reduce it to $3$ colors by the algorithm we discussed previously in $3$ rounds. 
-
-We must be careful about the time complexity especially when we deal with such small functions, because for practical purposes, the constants will start mattering! ($\log ^* n \leq 6$  for all practical $n$). But here, as a classic theoretic person in the context, we'll skip it anyways.
-
-## <span style="color:#d3a939">2-Coloring Algorithms:</span>
-
-Consider a undirected path graph. It's clear that it has a 2-coloring. A straightforward algorithm would be to perform $O(n)$ round computation where each node gets to know about the whole graph, then compute the coloring locally and then outputting the color, or maybe just find the distance from the start node and color based on the parity (in case of directed). 
-
-### <span style="color:#8bd952">Canonical LOCAL Algorithm:</span>
-
-LOCAL is a type of model used in distributed algorithm. It'll be defined properly in the upcoming sections, but for now its just as equivalent of what we have assumed till now - Each node has a unique ID and information about its neighbors and tries to output/compute some structure or property of the network.
-
-In any $t$-round algorithm, any node in the network can gain information/topology of the network within a radius of $t$ distance. For a particular node, any such distributed algorithm can be viewed as a centralized algorithm being locally operated on a $t$-hop subgraph of that node (or $\text{ball}_G(v , t)$). At first round, we simulate it for $t$ radius, then we simulate it for $t-1$ radius and so on.
-
-Thus, any $t$-round LOCAL algorithm can be mathematically viewed as a $f(\text{ball}_G(v , t))$ , where $f$ is some function that operates on the graph. The main essence is that the algorithm does not care about the topology of the graph that is greater than radius $t$ for any node.
-
-### <span style="color:#8bd952">Lower bound for 2-coloring:</span>
-
-Indeed, the straightforward algorithm we discussed is asymptotically as good as any other algorithm could do in terms of number of rounds. Let's prove this by contradiction. Suppose there is an algorithm $A$ which runs for $t = o(n)$ rounds and outputs a $2$-coloring for given a path graph. Let's cpnstruct a counter-example for which this algorithm $A$ would fail. 
-
-Consider three graphs  $G_1 , G_2 , G_3$ , all having nodes with unique identifiers,  of path length $2t+1$ , with central node being $u , v , w$ . Let's run the algorithm on these three graphs and get the 2-coloring for each of these path graphs. Now, by pigeonhole principle, atleast two of $u , v , w$ should have the same color. WLOG, we assume $G_1 , G_3$ are such graphs having central node being colored with the same color. Note that the central nodes in all three graphs has exactly $t$ nodes in both the sides.
-
-Given these info, construct a new graph $G$ , by adding a edge from one terminal node of $G_1$ to one terminal node of $G_3$ .
-
-```
-Color configuration of G1
-c' - ... - c(u) - ... - c'
-
-Color configuration of G3
-c'' - ... - c(w)- ... - c''
-
-Color configuration of G
-c' - ... - c(u) - ... - c' - c'' - ... - c(w) - ... - c'' 
-```
-
-We have two cases:
-1. If $c' \neq c''$ - The algorithm $A$ is wrong in this case for one of the graphs $G_1$ or $G_3$ as $c(u) = c(w)$ fixes the color configuration for every node and it should be same for both the graphs.
-2. If $c' = c''$ - The algorithm $A$ is wrong in this case for graph $G$ (Assuming that $2t+1+2t+1 \leq n$ , as we have a monochromatic edge.
-
-Thus, such an algorithm $A$ cannot exist with $4t+2 \leq n \implies t \leq \dfrac{n-2}{4}$ rounds. Note that for $t$ greater than this bound, this argument of "the algorithm working on $G$ is exactly equivalent to the algorithm independently working on $G_1$ and $G_3$ , then their results being combined directly", would fail, since now the radius of the central nodes will start overlapping with each other.
-
-Thus, for any deterministic $2$-coloring algorithm, $\Omega(n)$ is the lower bound.
-
-## <span style="color:#d3a939">Coloring with Randomized Algorithms</span>
-
-### <span style="color:#8bd952">Randomized Algorithms:</span>
-
-Randomized Algorithms can be classified into two types:
-
-1. Las-Vegas Algorithms: Algorithms which provide correct solutions (i.e., doesn't fail on any input), but running time of the algorithm is a random variable and is expressed in terms of expected runtime.
-2. Monte-Carlo Algorithms: Algorithms whose running time complexity is determined/fixed but the algorithm doesn't necessarily produce correct solutions. The algorithm's success/failure is a random variable. It could be bounded by a probability. A common term used is "Algorithm runs with high probability". This means that the probability of algorithm providing a incorrect output (failure) can be bounded as $\leq  \dfrac{1}{n^C}$ , where $C$ is a constant related to running time (usually hidden due to asymptotic notation).
-
-### <span style="color:#8bd952">Union-Bound:</span>
-
-Let $A_i$ be the event that node $i$ fails to compute the solution properly. Then the union bound tells us that
-$$
-P\left[\bigcup_{i = 1}^{n} A_i\right] \leq \sum_{i=1}^{n} P \left[ A_i \right]
-$$
-This is straightforward from the inclusion-exclusion principle, where we drop the higher order terms.
-### <span style="color:#8bd952">3-coloring Randomized Algorithm:</span>
-Here is a fairly straightforward algorithm. Each node has a flag $u_a \in \{0 , 1\}$ , indicating whether it has stopped or not, and value $v_a$. Once $u_a$ is $1$ , the node outputs $v_a$. 
-
-In each step, every node with its flag set to $0$ , picks a new color $c$ from $\{1 , 2 , 3\}$ uniformly at random. Then each node sends it current color to its neighbor. If $c$ is different from that of its neighbors, then the flag is set to $1$ and the node stops. Otherwise this continues.
-
-It is easy to see that in each step, a node $a$ will stop with probability $1/3$ . Fix a positive constant $C$. Let 
-$$
-k = (C + 1) \mathrm{log}~_{3/2} ~ n
-$$
-where $n$ is the number of nodes in the graph. Now if we run this algorithm for $k$ steps, the probability that a given node $a$ has not stopped is 
-$$
-\left(\dfrac{2}{3}\right)^k = \left(\dfrac{1}{n}\right)^{C+1} 
-$$
-By the union bound, the probability that there is a node that has not stopped is at most 
-$$
-p = \dfrac{1}{n^C}
-$$
-
-Thus, with probability at least $1 - p$ , all nodes have stopped after $k$ steps. For any given constant $C$ , there is an algorithm that runs for $k$ = $O(\mathrm{log} ~ n)$ rounds and produces a proper 3-coloring of a path with probability $1 - \dfrac{1}{n^C}$ . 
-
-## <span style="color:#d3a939">Exercises </span>
-
-1. Is there a $2$-coloring algorithm which runs in less than $n$ rounds on a path graph of length $n$?
-2. Design a $O(\log^* n)$ round algorithm that works on any path (not given a consistent orientation of the edges). 
 
 ## <span style="color:#d3a939">Resources:</span>
 
-- CS6851 Distributed Algorithms July-Nov 2025 Offering by Prof. Shreyas Pai.
 - [Distributed Algorithms 2020](https://jukkasuomela.fi/da2020/) by Prof. Juho Hirvonen and Prof. Jukka Suomela (Chapter 1).
