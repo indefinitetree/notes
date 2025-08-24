@@ -1,7 +1,4 @@
----
-title: 1 Introduction
-date: 2025-07-07
----
+
 ---
 Distributed algorithms present theoretical computer science from a different perspective. 
 
@@ -33,7 +30,7 @@ Distributed algorithms heavily rely on <span style="color:#69b5e9"><em>locality<
 
 Such answers will be useful in understanding nature and fundamental limitations of any other system consisting of interacting entities such as social networks, job markets etc.
 
-## Definitions and Terminologies:
+## <span style="color:#d3a939">Definitions and Terminologies:</span>
 
 Before we move on to the Algorithms, there are few terminologies and assumptions that should be made clear about the distributed network model we consider.
 1.  The network model is a <span style="color:#69b5e9"><em>connected undirected graph</em></span> - It could be weighted or unweighted

@@ -1,5 +1,5 @@
 ---
-title: 5 Minimum Spanning Tree
+title: 7 Minimum Spanning Tree
 date: 2025-07-14
 ---
 ---

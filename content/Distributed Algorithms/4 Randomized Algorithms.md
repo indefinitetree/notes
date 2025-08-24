@@ -35,9 +35,9 @@ $$
 
 Thus, with probability at least $1 - p$ , all nodes have stopped after $k$ steps. For any given constant $C$ , there is an algorithm that runs for $k$ = $O(\mathrm{log} ~ n)$ rounds and produces a proper 3-coloring of a path with probability $1 - \dfrac{1}{n^C}$ . 
 
-### $\Delta$+1 Randomized Coloring algorithm:
+### $\Delta$+1 <span style="color:#8bd952">Randomized Coloring algorithm:</span>
 
-#### Outline:
+#### <span style="color:#78bff2">Outline: </span>
 - Initially every node is in sleep state.
 - At $i$-th iteration:
 	- Each node $u$ wakes up with a probability $0.5$ .
@@ -47,11 +47,11 @@ Thus, with probability at least $1 - p$ , all nodes have stopped after $k$ steps
 	- Go back to sleep.
 
 It is straightforward that the algorithm computes a proper coloring, since the algorithm runs as long as there is a conflict in the coloring and terminates only when all the nodes are fixed which is when the graph has a proper coloring.
-#### Analysis:
-##### Claim: 
+#### <span style="color:#78bff2">Analysis: </span>
+##### <span style="color:#7788f0">Claim: </span>
 The algorithm terminates in $O(\log n)$ rounds with high probability.
 
-##### Proof:
+##### <span style="color:#7788f0">Proof:</span>
 Let $\text{fix}(u)$ be the event such that $c_u$ is not picked by any neighbor of $u$. Let $N_u$ be the neighborhood of $u$ that has not yet been fixed. Consider a $v \in N_u$ .  
 $$P[u~  \text{fixes its color at}~ i~\text{-th iteration}] = P[\text{fix}(u) ~ | ~ u ~ \text{wakes up}] \cdot P[u ~ \text{wakes up}] 
 $$
@@ -89,8 +89,8 @@ $$
 $$
 Therefore, for some $i = C \log_{4/3} n$ , $P[f(u , i)] = 1 - \dfrac{1}{n^C}$ . Therefore, by union bound, the probability that algorithm does not terminate by $i$-th iteration will be $1 - \dfrac{1}{n^{C-1}}$ . Thus, the running time of this algorithm is $O(\log n)$ with high probability.
 
-### Tail bounds:
-#### Chernoff bound:
+### <span style="color:#8bd952">Tail bounds:</span>
+#### <span style="color:#78bff2">Chernoff bound:</span>
 Let $X_1 , X_2 , ... , X_k$ are independent $0/1$ random variables. Let $\mu = E[X]$ , where 
 $$
 E[X] = E\left[\sum_{i = 1}^n X_i \right]
@@ -103,7 +103,7 @@ $$
 P[X < (1 - \delta)\mu] \leq e^{-\tfrac{\mu \delta^2}{2}}
 $$
 
-#### Markov's Inequality:
+#### <span style="color:#78bff2">Markov's Inequality:</span>
 Let $X$ be a random variable. Then for any $a$ , 
 $$
 P[X > a] \leq \dfrac{E[X]}{a}

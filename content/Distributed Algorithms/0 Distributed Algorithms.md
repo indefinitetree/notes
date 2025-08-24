@@ -6,10 +6,12 @@ date: 2025-07-07
 ### [[1 Introduction |Introduction]]
 ### [[2 Graph Theoretic Foundations |Graph Theoretic Foundations]]
 
+### [[3 Coloring Algorithms|Coloring Algorithms]]
+
+### [[4 Randomized Algorithms|Randomized Algorithms]]
+### [[5 Maximal Independent Set|Maximal Independent Set]]
+
 ### [[6 Tree Algorithms|Tree Algorithms]]
-
-### [[5 Maximal Independent Set|Local Symmetry Breaking]]
-
 ### [[7 Minimum Spanning Tree|Minimum Spanning Tree]]
 
 ### [[Solutions|Solutions]]

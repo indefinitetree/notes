@@ -1,7 +1,4 @@
----
-title: 4 Local Symmetry Breaking
-date: 2025-07-11
----
+
 ---
 We will look at problems which are <span style="color:#69b5e9"><em>local</em></span> symmetry breaking, where the goal is to break <span style="color:#69b5e9"><em>symmetry</em></span> among nodes that are quite close, typically neighbors. A fundamental problem in this category is the <span style="color:#69b5e9"><em>Maximal Independent Set (MIS)</em></span> problem. We will look at a <span style="color:#69b5e9"><em>MIS</em></span> Algorithm that takes $O(\log n)$ rounds. Another way to view this analysis is that each node (with high probability) needs only information about its $O(\log n)$ neighborhood. 
 
@@ -172,7 +169,6 @@ Since $|E| \leq n^2$ , therefore $P(X \leq 1) \leq \dfrac{1}{n^{C-2}}$ , we can 
 1.  We have seen distributed algorithms for MIS and $3$-coloring.
 	1. Show that given a $3$-coloring of the nodes it is possible to compute an MIS in $O(1)$ additional rounds. Does this mean that there exists an $O(\log^* n)$ round CONGEST algorithm for computing MIS on paths?
 	2. Show that given any MIS of the path, it is possible to compute a $3$-coloring in $O(1)$ additional rounds. Does this mean that computing an MIS in the LOCAL model requires $\Omega(\log^* n)$ rounds? 
-
 
 ## <span style="color:#d3a939">Resources:</span>
 - CS6851 Distributed Algorithms July-Nov 2025 Offering by Prof. Shreyas Pai.

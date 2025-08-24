@@ -1,5 +1,5 @@
 ---
-title: 3 Tree Algorithms
+title: 6 Tree Algorithms
 date: 2025-07-10
 ---
 ## <span style="color:#d3a939">Broadcast: </span>

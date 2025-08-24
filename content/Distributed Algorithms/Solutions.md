@@ -1,4 +1,4 @@
-## [[1 Introduction|1 Introduction]]
+## [[3 Coloring Algorithms|3 Coloring Algorithms]]
 
 #### Design a $O(\log^* n)$ round algorithm that works on any path (not given a consistent orientation of the edges). 
 

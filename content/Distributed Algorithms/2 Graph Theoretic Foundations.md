@@ -1,7 +1,3 @@
----
-title: 2 Graph Theoretic Foundations
-date: 2025-07-08
----
 --- 
 Basic Terminologies such as
 - Undirected and directed graphs
@@ -114,5 +110,5 @@ What if we used any <span style="color:#69b5e9"><em>vertex cover</em></span> ins
 
 Will be added soon
 
-## Resources:
+## <span style="color:#d3a939">Resources: </span>
 - [Distributed Algorithms 2020](https://jukkasuomela.fi/da2020/) by Prof. Juho Hirvonen and Prof. Jukka Suomela (Chapter 2).

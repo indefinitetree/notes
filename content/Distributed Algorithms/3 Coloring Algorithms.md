@@ -92,7 +92,7 @@ Thus, such an algorithm $A$ cannot exist with $4t+2 \leq n \implies t \leq \dfra
 
 Thus, for any deterministic $2$-coloring algorithm, $\Omega(n)$ is the lower bound.
 
-## <span style="color:#d3a939">Coloring</span> on general graphs and trees:
+## <span style="color:#d3a939">Coloring on general graphs and trees:</span>
 
 We already saw an $O(\log^* n)$-round algorithm for directed paths.  Let's now look at the lower-bound for $3$-coloring directed paths.
 ### <span style="color:#8bd952">Lower bound for 3-coloring directed paths:</span>
@@ -186,7 +186,7 @@ Open question (Considered to be hard): Is $O(\Delta + \log^* n)$ round algorithm
 1. Is there a $2$-coloring algorithm which runs in less than $n$ rounds on a path graph of length $n$?
 2. Design a $O(\log^* n)$ round algorithm that works on any path (not given a consistent orientation of the edges). 
 
-## Resources:
+## <span style="color:#d3a939">Resources:</span>
 - https://github.com/olidennis/round-eliminator - Round Eliminator Tool that does automatic Round-Elimination. It also gives heuristic based reduction problems in case the problem description is too large.
 - [Linial's Lower bound made easy](https://arxiv.org/pdf/1402.2552) by Juhana Laurinharju and Jukka Suomela.
 - CS6851 Distributed Algorithms July-Nov 2025 Offering by Prof. Shreyas Pai.
