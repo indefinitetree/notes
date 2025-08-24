@@ -1,4 +1,5 @@
 
+
 ---
 Distributed algorithms present theoretical computer science from a different perspective. 
 
@@ -55,7 +56,6 @@ Before we move on to the Algorithms, there are few terminologies and assumptions
 	- <span style="color:#69b5e9"><em> LOCAL</em></span> - There is no restriction on the size of message. This model is useful in focusing on <span style="color:#69b5e9"><em>locality</em></span> issues in distributed computing.
 
 6.  Operation - Usually, each node is assumed to operate on the <span style="color:#69b5e9"><em>same instance</em></span> of the algorithm. However, depending on the local information, each node can have its own behavior (due to randomness or unique ID or the information sent by other nodes).
-
 
 ## <span style="color:#d3a939">Resources:</span>
 
